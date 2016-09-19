@@ -1,0 +1,81 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.content-container {
+    background-size: cover;
+    width: 80%;
+    overflow: hidden;
+    margin: auto;
+    background-color: #e6f3fd;
+    margin-top: 5%;
+    border: 1px solid #dce3ea;
+
+}
+
+.avatar-photo-mini {
+    width: 20%
+}
+
+
+.pagination-cl {
+    background-size: cover;
+    width: 80%;
+    overflow: hidden;
+    margin: auto;
+}
+
+.user_profile {
+        background-size: cover;
+    width: 80%;
+    overflow: hidden;
+    margin: auto;
+    background-color: #e6f3fd;
+    margin-top: 2%;
+    border: 1px solid #dce3ea;
+    white-space:nowrap
+}
+
+
+.user_profile img {
+    width: 100%
+}
+.user_profile_text {
+    margin-left: 35%
+}
+.img-container img {
+    width: 95%;
+    margin-left: 2.5%;
+}
+
+#photo-data{
+    margin-left: 2.5%;
+}
+
+.tag-finder {
+    margin-left: 66.5%;
+}
+
+
+
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}

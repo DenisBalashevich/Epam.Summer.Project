@@ -1,0 +1,74 @@
+﻿@model MvcPL.ViewModels.IndexViewModel<MvcPL.ViewModels.PhotoViewModel>
+@using MvcPL.Infastructure.Helpers;
+@using MvcPL.ViewModels
+
+
+<div id="find-results">
+    @foreach (var item in Model.Items)
+    {
+
+        <div class="content-container">
+            <div class="img-container">
+                @Html.Raw("<img src=\"data:image/jpeg;base64,"
+                          + Convert.ToBase64String(item.Picture) + "\" class=\"image-data\" alt=\"File not found\" />")
+            </div>
+            <div id="photo-data">
+            <div id="Rating-@item.Id">
+                @using (Ajax.BeginForm("Rating", "Home", new
+                {
+                    idPhoto = @item.Id
+                }, new AjaxOptions { OnSuccess = "OnSuccess", LoadingElementId = "loading", InsertionMode = InsertionMode.Replace }))
+                {
+                    if (item.Ratings.FirstOrDefault(l => l.UserName == User.Identity.Name) == null)
+                    {
+                        <input type="submit" value="@item.Ratings.Count Likes" id="likeEntries-@item.Id" class="btn-default" />
+                    }
+                    else
+                    {
+                        <input type="submit" value="@item.Ratings.Count Likes" id="likeEntries-@item.Id" class="btn-danger" />
+                    }
+                }
+            </div>
+            @if (User.Identity.Name.CompareTo(item.UserName) == 0 || User.IsInRole("Administrator"))
+            {
+                <a class="btn-success" href="@Url.Action("Delete", "Home",new { id = item.Id },null)">Delete</a>
+            }
+            <h4>@item.Name</h4>
+            <h5>
+            @if (!ReferenceEquals(item.Tags, null))
+            {
+                foreach (var tag in item.Tags)
+                {
+                    @Ajax.ActionLink("#" + @tag.Name, "TagFinder", "Home", new { tagName = tag.Name }, new AjaxOptions() { UpdateTargetId = "find-results" })
+                }
+            }
+            </h5>
+            @Html.ActionLink(item.UserName, "ShowProfile", "Profile", new { userName =  Model.Items.First().UserName }, htmlAttributes: null)
+            @item.Date
+                </div>
+        </div>
+
+    }
+    
+    
+
+
+
+    <div class="pagination-cl">
+    @using (Ajax.BeginForm( new AjaxOptions { UpdateTargetId = "find-results" }))
+    {
+         @Html.PageLinks(Model.PageInfo)
+    }
+</div>
+    <script>
+        function OnSuccess(data) {
+            $('#likeEntries-' + data.PhotoId)["0"].value = data.RatingsCount + " Likes";
+            var results = $('#likeEntries-' + data.PhotoId);
+            if (data.IsSelected == true)
+                results["0"].className = "btn-danger";
+            else results["0"].className = "btn-default";
+        }
+    </script>
+
+
+</div>

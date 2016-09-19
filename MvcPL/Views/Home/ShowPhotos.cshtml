@@ -1,0 +1,57 @@
+﻿@model MvcPL.ViewModels.IndexViewModel
+@using MvcPL.Infastructure.Helpers;
+
+@foreach (var item in Model.Photos)
+{
+
+    <div class="content-container">
+        <div class="img-container">
+            @Html.Raw("<img src=\"data:image/jpeg;base64,"
+                      + Convert.ToBase64String(item.Picture) + "\" class=\"image-data\" alt=\"File not found\" />")
+        </div>
+
+        <div id="Rating-@item.Id">
+            @using (Ajax.BeginForm("Rating", "Home", new
+            {
+                idPhoto = @item.Id
+            }, new AjaxOptions { OnSuccess = "OnSuccess", LoadingElementId = "loading", InsertionMode = InsertionMode.Replace }))
+            {
+                if (item.Ratings.FirstOrDefault(l => l.UserName == User.Identity.Name) == null)
+                {
+                    <input type="submit" value="@item.Ratings.Count Likes" id="likeEntries-@item.Id" class="Unselected-Like" />
+                }
+                else
+                {
+                    <input type="submit" value="@item.Ratings.Count Likes" id="likeEntries-@item.Id" class="Selected-Like" />
+                }
+            }
+        </div>
+        @if (User.Identity.Name.CompareTo(item.UserName)==0 ||User.IsInRole("Administrator"))
+        {
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+        }
+        <br>
+        @if (!ReferenceEquals(item.Tags, null))
+        {
+            foreach (var tag in item.Tags)
+            {
+                @Ajax.ActionLink("#" + @tag.Name, "TagFinder", "Home", new { tagName = tag.Name }, new AjaxOptions() { UpdateTargetId = "find-results" })
+            }
+        }
+
+
+    </div>
+}
+@Html.PageLinks(Model.PageInfo, page => Url.Action("Index", new { page }))
+
+<script>
+    function OnSuccess(data) {
+        $('#likeEntries-' + data.PhotoId)["0"].value = data.RatingsCount + " Likes";
+        var results = $('#likeEntries-' + data.PhotoId);
+        if (data.IsSelected == true)
+            results["0"].className = "Selected-Like";
+        else results["0"].className = "Unselected-Like";
+    }
+</script>
+
+

@@ -1,0 +1,44 @@
+﻿
+@model MvcPL.ViewModels.PhotoViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm("Create", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Add image</legend>
+
+
+
+        <div class="editor-label">Image file</div>
+        <div class="editor-field1">
+            <input type="file" name="uploadImage" />
+        </div>
+
+        <div class="editor-label">Some words</div>
+        <div class="editor-field">
+
+            <input type="text" name="name" />
+
+        </div>
+
+        <div class="editor-label">Tags</div>
+        <div class="editor-field">
+
+            <textarea name="tags" cols="40" rows="3" value="#"></textarea>
+
+        </div>
+
+        <p>
+            <input type="submit" value="Add!" />
+        </p>
+    </fieldset>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

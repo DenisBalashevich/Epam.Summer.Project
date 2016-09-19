@@ -1,0 +1,19 @@
+﻿@model MvcPL.ViewModels.EditUserViewModel
+@{
+    ViewBag.Title = "Edit user";
+}
+
+<table class="table">
+    <tr>
+        <td> User name</td>
+        <td> User E-mail</td>
+        <td>Id</td>
+        <td>Roles</td>
+
+        <h2>All users</h2>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.AllRoles, new SelectList( Model.AllRoles.Select(t=>t.RoleName)))
+        </div>
+        }
+        </tr>
+    </table>
